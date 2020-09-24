@@ -12,6 +12,10 @@ $arTemplateParameters = array(
 		"TYPE" => "CHECKBOX",
 		"DEFAULT" => "N",
 	),
+	"CANONICAL_REL" => Array(
+		"NAME" => "ID информационного блока для rel=canonical",
+		"TYPE" => "STRING",
+	),
 	"DISPLAY_PICTURE" => Array(
 		"NAME" => GetMessage("T_IBLOCK_DESC_NEWS_PICTURE"),
 		"TYPE" => "CHECKBOX",
