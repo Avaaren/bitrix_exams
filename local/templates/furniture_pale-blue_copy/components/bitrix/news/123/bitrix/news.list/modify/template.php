@@ -12,7 +12,18 @@
 /** @var CBitrixComponent $component */
 $this->setFrameMode(true);
 ?>
- 
+
+<?
+global $APPLICATION;
+$arResult["SPECIAL_DATE"] = $arParams["SPECIAL_DATE"];
+if ( $arResult["SPECIAL_DATE"] == "Y")
+{
+	$firstNewsDate = $arResult["ITEMS"][0]["ACTIVE_FROM"];
+	$APPLICATION->SetPageProperty('specialdate', $firstNewsDate);
+}
+?>
+
+
 <div class="news-list">
 <?if($arParams["DISPLAY_TOP_PAGER"]):?>
 	<?=$arResult["NAV_STRING"]?><br />
