@@ -20,7 +20,7 @@ $this->setFrameMode(true);
 	?>
 	<a href="<?=$arResult["FOLDER"].$arResult["URL_TEMPLATES"]["rss"]?>" title="rss" target="_self"><img alt="RSS" src="<?=$templateFolder?>/images/gif-light/feed-icon-16x16.gif" border="0" align="right" /></a>
 <?endif?>
-<?print_r($arParams["PROPERTY_CODE"]);?>
+
 <?if($arParams["USE_SEARCH"]=="Y"):?>
 <?=GetMessage("SEARCH_LABEL")?><?$APPLICATION->IncludeComponent(
 	"bitrix:search.form",
@@ -54,7 +54,7 @@ $this->setFrameMode(true);
 <?endif?>
 <?$APPLICATION->IncludeComponent(
 	"bitrix:news.list",
-	"",
+	"modify",
 	Array(
 		"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
 		"IBLOCK_ID" => $arParams["IBLOCK_ID"],
@@ -64,6 +64,7 @@ $this->setFrameMode(true);
 		"SORT_BY2" => $arParams["SORT_BY2"],
 		"SORT_ORDER2" => $arParams["SORT_ORDER2"],
 		"FIELD_CODE" => $arParams["LIST_FIELD_CODE"],
+		"SPECIAL_DATE" => $arParams["SPECIAL_DATE"],
 		"PROPERTY_CODE" => $arParams["LIST_PROPERTY_CODE"],
 		"DETAIL_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["detail"],
 		"SECTION_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["section"],
