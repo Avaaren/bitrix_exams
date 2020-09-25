@@ -18,6 +18,7 @@ $this->setFrameMode(true);
 	Array(
 		"DISPLAY_DATE" => $arParams["DISPLAY_DATE"],
 		"DISPLAY_NAME" => $arParams["DISPLAY_NAME"],
+		"CANONICAL_REL" => $arParams["CANONICAL_REL"],
 		"DISPLAY_PICTURE" => $arParams["DISPLAY_PICTURE"],
 		"DISPLAY_PREVIEW_TEXT" => $arParams["DISPLAY_PREVIEW_TEXT"],
 		"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
