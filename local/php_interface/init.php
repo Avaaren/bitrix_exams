@@ -2,7 +2,17 @@
 //Обработчик в файле /bitrix/php_interface/init.php
 AddEventHandler("main", "OnBeforeEventAdd", array("MailChanger", "OnBeforeEventAddHandler"));
 class MailChanger
-{
+{   
+    public static function logging($description, $severity = "INFO", $auditType = "CUSTOM_DEFAULT") 
+    {    
+        CEventLog::Add(array(
+         "SEVERITY" => $severity,
+         "AUDIT_TYPE_ID" => $auditType,
+         "MODULE_ID" => "main",
+         "DESCRIPTION" => $description,
+      ));
+    }
+
     function OnBeforeEventAddHandler(&$event, &$lid, &$arFields)
     {   
         // Если событие добавления принадлежит форме, то работаем с ним
@@ -24,7 +34,9 @@ class MailChanger
                 // Если не авторизован, то заполняем данными из формы
                 $resultString = "Пользователь не авторизован:  Данные из формы: ".$arFields["AUTHOR"];
                 $arFields["AUTHOR"] = $resultString; 
-            } 
+            }
+            // Записываем в журнал событий 
+            self::logging("Замена данных в отсылаемом письме – $resultString");
         }  
     }
 }
