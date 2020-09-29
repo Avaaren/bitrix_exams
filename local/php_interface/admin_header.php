@@ -1,5 +1,15 @@
 <?php
 
+global $USER;
+
+$arGroups = CUser::GetUserGroup($USER->GetID());
+
+// На сайте id контент-редакторов = 8, админов = 1
+if ( in_array(8, $arGroups) && !in_array(1, $arGroups))
+{
+    removeContentFromMenu();
+}
+
 function removeContentFromMenu()
 {   
     /* Обращаемся к глобальной переменной $adminMenu не через
