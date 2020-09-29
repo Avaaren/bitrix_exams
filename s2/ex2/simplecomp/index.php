@@ -1,4 +1,12 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Простой компонент");
-?>Text here....<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+?><?$APPLICATION->IncludeComponent(
+	"custom:simplecomp.exam",
+	"",
+	Array(
+		"NEWS_IBLOCK_ID" => "",
+		"PRODUCTS_IBLOCK_ID" => "",
+		"UF_CODE" => ""
+	)
+);?><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
