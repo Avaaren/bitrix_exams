@@ -1,8 +1,8 @@
 <?
 $aMenuLinks = Array(
 	Array(
-		"Форма обратной связи", 
-		"/s2/ex2/feedback/", 
+		"Простой компонент", 
+		"/s2/ex2/simplecomp/", 
 		Array(), 
 		Array(), 
 		"" 
