@@ -1,9 +1,16 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
+global $APPLICATION;
+
 $arResult["NEWS_ID"] = $arParams["NEWS_IBLOCK_ID"];
 $arResult["PRODUCT_ID"] = $arParams["PRODUCT_IBLOCK_ID"];
 $arResult["UF_CODE"] = $arParams["UF_CODE"];
 
+$result = selectCatalog($arParams);
+
+$arResult["NEWS_CATALOG"] = $result["RESULT"];
+
+$APPLICATION->SetTitle("Элементов каталога - ".$result['COUNTER']);
 
 function selectNewsArray($arParams)
 {
@@ -11,7 +18,7 @@ function selectNewsArray($arParams)
     $arNews = array();
     $arFilter = Array('IBLOCK_ID'=>$arParams["PRODUCTS_IBLOCK_ID"], "ACTIVE"=>"Y");
     $arSelect = Array("ID", "NAME", "UF_*");
-// Выбираем все разделы продукции, вместе с массивом новостей, привязанным к ним
+    // Выбираем все разделы продукции, вместе с массивом новостей, привязанным к ним
     $db_list = CIBlockSection::GetList(false, $arFilter, true, $arSelect);
     while($ar_result = $db_list->Fetch())
     {
@@ -50,6 +57,7 @@ function selectCatalog($arParams)
     // Получаем массив новостей и категорий
     $newsArray = selectNewsArray($arParams);
     $resultArray = array();
+    $counter = 0;
     // Для каждой новости создадим массив с категориями и товарами
     foreach ($newsArray as $key => $value)
     {
@@ -78,14 +86,13 @@ function selectCatalog($arParams)
             //  Все полученные продукты добавляем в массив для последующего отображения
              while( $productObject = $products->Fetch() )
              {
+                $counter++;
                 array_push($resultArray[$key]["PRODUCTS"], $productObject);
              }
         }
     }
-    return $resultArray;
+    return array("RESULT"=>$resultArray, "COUNTER"=>$counter);
 }
-$arResult["NEWS_CATALOG"] = selectCatalog($arParams);
-
 
 $this->IncludeComponentTemplate();
 ?>
