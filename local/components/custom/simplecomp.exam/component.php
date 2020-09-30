@@ -4,12 +4,12 @@ $arResult["NEWS_ID"] = $arParams["NEWS_IBLOCK_ID"];
 $arResult["PRODUCT_ID"] = $arParams["PRODUCT_IBLOCK_ID"];
 $arResult["UF_CODE"] = $arParams["UF_CODE"];
 
-function selectNewsArray()
+
+function selectNewsArray($arParams)
 {
     $arSections = array();
     $arNews = array();
-    
-    $arFilter = Array('IBLOCK_ID'=>6, "ACTIVE"=>"Y");
+    $arFilter = Array('IBLOCK_ID'=>$arParams["PRODUCTS_IBLOCK_ID"], "ACTIVE"=>"Y");
     $arSelect = Array("ID", "NAME", "UF_*");
 // Выбираем все разделы продукции, вместе с массивом новостей, привязанным к ним
     $db_list = CIBlockSection::GetList(false, $arFilter, true, $arSelect);
@@ -18,7 +18,7 @@ function selectNewsArray()
         // Каждый из них отправляем в отдельный массив разделов
         array_push($arSections, $ar_result);
         // И также для каждого просматриваем все привязанные новости
-        foreach ($ar_result['UF_NEWS_LINK'] as $news)
+        foreach ($ar_result[$arParams["UF_CODE"]] as $news)
         {
             // Если новости еще нет в массиве новостей, то отправляем ее туда
             //  в виде $arNews[ID новости]=>["ID раздела"]
@@ -45,17 +45,17 @@ function selectNewsArray()
       return $arNews;
 }
 
-function selectCatalog()
+function selectCatalog($arParams)
 {
     // Получаем массив новостей и категорий
-    $newsArray = selectNewsArray();
+    $newsArray = selectNewsArray($arParams);
     $resultArray = array();
     // Для каждой новости создадим массив с категориями и товарами
     foreach ($newsArray as $key => $value)
     {
         // Выбираем поля новости на которой находится цикл
         $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM");
-        $arFilter = Array("IBLOCK_ID"=>5, "ID"=>$key, "ACTIVE"=>"Y");
+        $arFilter = Array("IBLOCK_ID"=>$arParams["NEWS_IBLOCK_ID"], "ID"=>$key, "ACTIVE"=>"Y");
         $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
         while($newsObject = $res->Fetch())
         {
@@ -71,7 +71,7 @@ function selectCatalog()
             // Для каждой новости необходима продукция категорий, которые привязаны к этой новости
             $products = CIBlockElement::GetList(
                 false,
-                ['IBLOCK_ID' => '6', 'SECTION_ID' => $value["IDS"], "ACTIVE"=>"Y"],
+                ['IBLOCK_ID' => $arParams["PRODUCTS_IBLOCK_ID"], 'SECTION_ID' => $value["IDS"], "ACTIVE"=>"Y"],
                 false, false,
                 ["ID", "IBLOCK_ID", 'NAME', "PROPERTY_PRICE", "PROPERTY_MATERIAL", "PROPERTY_ARTNUMBER"]
              );
@@ -82,9 +82,10 @@ function selectCatalog()
              }
         }
     }
-    $arResult["CATALOG"] = $resultArray;
+    return $resultArray;
 }
+$arResult["NEWS_CATALOG"] = selectCatalog($arParams);
 
-selectCatalog();
+
 $this->IncludeComponentTemplate();
 ?>
