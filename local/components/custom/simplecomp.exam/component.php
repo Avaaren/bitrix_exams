@@ -9,7 +9,7 @@ function selectNewsArray()
     $arSections = array();
     $arNews = array();
     
-    $arFilter = Array('IBLOCK_ID'=>6);
+    $arFilter = Array('IBLOCK_ID'=>6, "ACTIVE"=>"Y");
     $arSelect = Array("ID", "NAME", "UF_*");
 // Выбираем все разделы продукции, вместе с массивом новостей, привязанным к ним
     $db_list = CIBlockSection::GetList(false, $arFilter, true, $arSelect);
@@ -42,9 +42,49 @@ function selectNewsArray()
             */ 
         }
     }
-      return array("NEWS"=>$arNews);
+      return $arNews;
 }
 
+function selectCatalog()
+{
+    // Получаем массив новостей и категорий
+    $newsArray = selectNewsArray();
+    $resultArray = array();
+    // Для каждой новости создадим массив с категориями и товарами
+    foreach ($newsArray as $key => $value)
+    {
+        // Выбираем поля новости на которой находится цикл
+        $arSelect = Array("ID", "NAME", "DATE_ACTIVE_FROM");
+        $arFilter = Array("IBLOCK_ID"=>5, "ID"=>$key, "ACTIVE"=>"Y");
+        $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+        while($newsObject = $res->Fetch())
+        {
+            // Для каждой новости создаем массив, который будет разбирать шаблон
+            // Добавляем в массив данные необходимые в задании
+            $resultArray[$key] = array(
+                "NEWS_NAME"=>$newsObject["NAME"],
+                "NEWS_DATE"=>$newsObject["DATE_ACTIVE_FROM"],
+                "CATEGORIES"=>$value["NAMES"],
+                "PRODUCTS"=>array(),
 
+            );
+            // Для каждой новости необходима продукция категорий, которые привязаны к этой новости
+            $products = CIBlockElement::GetList(
+                false,
+                ['IBLOCK_ID' => '6', 'SECTION_ID' => $value["IDS"], "ACTIVE"=>"Y"],
+                false, false,
+                ["ID", "IBLOCK_ID", 'NAME', "PROPERTY_PRICE", "PROPERTY_MATERIAL", "PROPERTY_ARTNUMBER"]
+             );
+            //  Все полученные продукты добавляем в массив для последующего отображения
+             while( $productObject = $products->Fetch() )
+             {
+                array_push($resultArray[$key]["PRODUCTS"], $productObject);
+             }
+        }
+    }
+    $arResult["CATALOG"] = $resultArray;
+}
+
+selectCatalog();
 $this->IncludeComponentTemplate();
 ?>
