@@ -17,7 +17,9 @@
                         <?echo $product["NAME"]?> - 
                         <?echo $product["PROPERTY_PRICE_VALUE"]?> - 
                         <?echo $product["PROPERTY_MATERIAL_VALUE"]?> - 
-                        <?echo $product["PROPERTY_ARTNUMBER_VALUE"]?>  
+                        <?echo $product["PROPERTY_ARTNUMBER_VALUE"]?>
+                        <br>  
+                        <?echo $product["DETAIL_PAGE_URL"]?> 
                   </li>
                   <?endforeach;?> 
             </ul>

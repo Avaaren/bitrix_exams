@@ -7,7 +7,7 @@
         "!PROPERTY_FIRMA" => false,
         "CHECK_PERMISSIONS" => "Y"
     );
-    $arSelect = Array("ID", "NAME", "PROPERTY_FIRMA");
+    $arSelect = Array("ID", "NAME", "PROPERTY_".$arParams["PRODUCT_PROPERTY_CODE"]);
     $res = CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize"=>50), $arSelect);
     while($ar_result = $res->Fetch())
     {
@@ -45,7 +45,7 @@
             $arSelect = Array(
                 "ID", "IBLOCK_ID", 'NAME', 
                 "PROPERTY_PRICE", "PROPERTY_MATERIAL", 
-                "PROPERTY_ARTNUMBER"
+                "PROPERTY_ARTNUMBER", "DETAIL_PAGE_URL"
             );
             $arFilter = Array(
                 "IBLOCK_ID"=>$arParams["PRODUCTS_IBLOCK_ID"], 
@@ -56,7 +56,11 @@
             $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
             
             while( $productObject = $res->Fetch() )
-            {
+            {   
+                if ( $arParams["LINK_TEMPLATE"] )
+                {
+                    $productObject["DETAIL_PAGE_URL"] = SITE_DIR.$arParams["LINK_TEMPLATE"]."/".$productObject["ID"];
+                }
                 array_push($resultArray[$key]["PRODUCTS"], $productObject);
             }
         }
