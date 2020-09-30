@@ -9,8 +9,8 @@
             <b>
                   <?echo $arItem["NEWS_NAME"]?> - <?echo $arItem["NEWS_DATE"]?>
             </b> (
-                  <?foreach($arItem["CATEGORIES"] as $category):?>
-                        <?if ($key === array_key_last($array)):?>
+                  <?foreach($arItem["CATEGORIES"] as $key => $category):?>
+                        <?if ($key == array_key_last($arItem["CATEGORIES"])):?>
                               <?echo "$category"?>
                         <?else:?> 
                               <?echo "$category, "?> 
