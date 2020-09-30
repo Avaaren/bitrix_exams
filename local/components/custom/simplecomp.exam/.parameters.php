@@ -21,5 +21,6 @@
             "TYPE" => "STRING",
             "MULTIPLE" => "N",
         ),
+        "CACHE_TIME" => array(),
     ),
 );
