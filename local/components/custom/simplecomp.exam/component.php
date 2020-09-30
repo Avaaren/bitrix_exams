@@ -1,5 +1,13 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
+$groups = $USER->GetGroups();
+if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
+{
+    // Если пользователь контент менеджер, то не кешировать
+    if ( in_array(8, $groups) && !in_array(1, $groups))
+    {
+        $this->AbortResultCache();
+    }
     $arFirm = array();
     $arFilter = Array(
         'IBLOCK_ID'=>$arParams["PRODUCTS_IBLOCK_ID"],
@@ -55,7 +63,7 @@
             );
             $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
             
-            while( $productObject = $res->Fetch() )
+            while( $productObject = $res->GetNext() )
             {   
                 if ( $arParams["LINK_TEMPLATE"] )
                 {
@@ -68,5 +76,7 @@
     $APPLICATION->SetTitle("Разделов - ".$counter); 
     $arResult["CATALOG"] = $resultArray;
 
-$this->IncludeComponentTemplate();
+    $this->IncludeComponentTemplate();
+}
+
 ?>
