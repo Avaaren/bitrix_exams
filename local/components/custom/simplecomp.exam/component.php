@@ -52,7 +52,7 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
             );
             $arSort = array('NAME' => 'ASC', 'SORT' => 'ASC');
             $arSelect = Array(
-                "ID", "IBLOCK_ID", 'NAME', 
+                "ID", "IBLOCK_ID", "CODE", 'NAME', 
                 "PROPERTY_PRICE", "PROPERTY_MATERIAL", 
                 "PROPERTY_ARTNUMBER", "DETAIL_PAGE_URL"
             );
@@ -63,12 +63,12 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
                 "CHECK_PERMISSIONS" => "Y"
             );
             $res = CIBlockElement::GetList($arSort, $arFilter, false, false, $arSelect);
-            
             while( $productObject = $res->GetNext() )
             {   
+
                 if ( $arParams["LINK_TEMPLATE"] )
                 {
-                    $productObject["DETAIL_PAGE_URL"] = SITE_DIR.$arParams["LINK_TEMPLATE"]."/".$productObject["ID"];
+                    $productObject["DETAIL_PAGE_URL"] = CIBlock::ReplaceDetailUrl($arParams["LINK_TEMPLATE"],$productObject, false, "E");
                 }
                 array_push($resultArray[$key]["PRODUCTS"], $productObject);
             }
@@ -76,7 +76,6 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
     }
     $APPLICATION->SetTitle("Разделов - ".$counter); 
     $arResult["CATALOG"] = $resultArray;
-
     $this->IncludeComponentTemplate();
 }
 
