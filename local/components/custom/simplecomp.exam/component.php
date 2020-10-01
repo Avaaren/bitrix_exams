@@ -4,7 +4,6 @@ $groups = $USER->GetGroups();
 
 if ($_REQUEST["F"])
 {
-        echo "чистим";
         $this->AbortResultCache();
         $this->ClearResultCache($groups);
         
@@ -16,7 +15,6 @@ if ($this->StartResultCache(false, $groups))
     // Выходим из кеширования и чистим кеш
     if ($_REQUEST["F"])
     {
-        echo "Абортнули";
         $this->AbortResultCache();
         $this->ClearResultCache($groups);      
     }
