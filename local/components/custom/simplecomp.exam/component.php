@@ -2,6 +2,11 @@
 // ПОлучаем текущий ид пользователя
 $currentUserID = $USER->GetID();
 
+// Получим тип текущего пользователя
+$rsUser = CUser::GetByID($currentUserID);
+$arUser = $rsUser->Fetch();
+$currentUserType = $arUser["UF_AUTHOR_TYPE"];
+
 $arAuthors = array();
 // Выбираем новости из указанного в параметрах инфоблока
 $arFilter = Array('IBLOCK_ID'=>$arParams["NEWS_IBLOCK_ID"]);
@@ -104,12 +109,43 @@ foreach ($arAuthors as $key => $value)
         }
     }
 }
+// Нужно реализовать доп. логику в выборке:
+foreach ( $resultArray as $key => $value )
+{
+    // Убрать текущего пользователя и его новости
+    if ($key == $currentUserID)
+    {
+        unset($resultArray[$key]);
+    }
+    // Убрать авторов с типом, отличным от типа текущего пользователя
+    if ( $value["AUTHOR"]["TYPE"] != $currentUserType)
+    {
+        unset($resultArray[$key]);
+    }
+    // Убрать новости, в авторах у которых, есть текущий пользователь
+    foreach ( $value["NEWS"] as $news_key => $news_value )
+    {
+        if ( in_array($currentUserID, $news_value["AUTHORS"]) )
+        {
+            unset($resultArray[$key]["NEWS"][$news_key]);
+        }
+    }
 
-print_r($resultArray);
+}
+// print_r($resultArray);
+
+$APPLICATION->SetTitle("Разделов - ".$counter);
+
+if ( $USER->IsAuthorized() )
+{
+    $arResult["NEWS"] = $resultArray;
+}
+else
+{
+    $arResult["NON_AUTH"] = "Y";
+}
 
 
-$APPLICATION->SetTitle("Разделов - ".$counter); 
-$arResult["CATALOG"] = $resultArray;
 
 $this->IncludeComponentTemplate();
 
