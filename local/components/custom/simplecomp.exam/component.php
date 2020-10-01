@@ -9,6 +9,7 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
         $this->AbortResultCache();
     }
     $arFirm = array();
+    $arSort = array('NAME' => 'ASC', 'SORT' => 'ASC');
     $arFilter = Array(
         'IBLOCK_ID'=>$arParams["PRODUCTS_IBLOCK_ID"],
         "ACTIVE"=>"Y",
@@ -16,7 +17,7 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
         "CHECK_PERMISSIONS" => "Y"
     );
     $arSelect = Array("ID", "NAME", "PROPERTY_".$arParams["PRODUCT_PROPERTY_CODE"]);
-    $res = CIBlockElement::GetList(Array(), $arFilter, false, Array("nPageSize"=>50), $arSelect);
+    $res = CIBlockElement::GetList($arSort, $arFilter, false, Array("nPageSize"=>50), $arSelect);
     while($ar_result = $res->Fetch())
     {
 
@@ -49,7 +50,7 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
                 "FIRM_NAME" => $obFirm["NAME"],
                 "PRODUCTS" => array(),
             );
-
+            $arSort = array('NAME' => 'ASC', 'SORT' => 'ASC');
             $arSelect = Array(
                 "ID", "IBLOCK_ID", 'NAME', 
                 "PROPERTY_PRICE", "PROPERTY_MATERIAL", 
@@ -61,7 +62,7 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
                 "ACTIVE"=>"Y",
                 "CHECK_PERMISSIONS" => "Y"
             );
-            $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+            $res = CIBlockElement::GetList($arSort, $arFilter, false, false, $arSelect);
             
             while( $productObject = $res->GetNext() )
             {   
