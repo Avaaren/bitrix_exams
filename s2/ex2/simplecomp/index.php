@@ -1,8 +1,17 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
 $APPLICATION->SetTitle("Простой компонент");
-?>
-
-Text here....
-
-<?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
+?><?$APPLICATION->IncludeComponent(
+	"custom:simplecomp.exam", 
+	".default", 
+	array(
+		"CACHE_TIME" => "10",
+		"CACHE_TYPE" => "A",
+		"CLASS_IBLOCK_ID" => "11",
+		"LINK_TEMPLATE" => "/catalog_exam/#SECTION_ID#/#ELEMENT_CODE#",
+		"PRODUCTS_IBLOCK_ID" => "6",
+		"PRODUCT_PROPERTY_CODE" => "FIRMA",
+		"COMPONENT_TEMPLATE" => ".default"
+	),
+	false
+);?><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
