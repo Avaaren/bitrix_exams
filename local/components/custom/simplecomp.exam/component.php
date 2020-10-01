@@ -1,12 +1,24 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 $groups = $USER->GetGroups();
-if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
+
+if ($_REQUEST["F"])
 {
-    // Если пользователь контент менеджер, то не кешировать
-    if ( in_array(8, $groups) && !in_array(1, $groups))
-    {
+        echo "чистим";
         $this->AbortResultCache();
+        $this->ClearResultCache($groups);
+        
+}
+
+if ($this->StartResultCache(false, $groups))
+{
+    // Если запущено кеширование, то при включенном фильтре
+    // Выходим из кеширования и чистим кеш
+    if ($_REQUEST["F"])
+    {
+        echo "Абортнули";
+        $this->AbortResultCache();
+        $this->ClearResultCache($groups);      
     }
     $arFirm = array();
     $arFilter = Array(
@@ -55,12 +67,30 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
                 "PROPERTY_PRICE", "PROPERTY_MATERIAL", 
                 "PROPERTY_ARTNUMBER", "DETAIL_PAGE_URL"
             );
-            $arFilter = Array(
-                "IBLOCK_ID"=>$arParams["PRODUCTS_IBLOCK_ID"], 
-                "ID"=>$value, 
-                "ACTIVE"=>"Y",
-                "CHECK_PERMISSIONS" => "Y"
-            );
+            if ($_REQUEST["F"])
+            {
+                $arFilter = Array(
+                    "IBLOCK_ID"=>$arParams["PRODUCTS_IBLOCK_ID"], 
+                    "ID"=>$value, 
+                    "ACTIVE"=>"Y",
+                    "CHECK_PERMISSIONS" => "Y",
+                    array(
+                        "LOGIC" => "OR",
+                        array("<=PROPERTY_PRICE" => 1700, "=PROPERTY_MATERIAL" => "Дерево, ткань"),
+                        array("<PROPERTY_PRICE" => 1500, "=PROPERTY_MATERIAL" => "Металл, пластик"),
+                    )
+                );
+            }
+            else 
+            {
+                $arFilter = Array(
+                    "IBLOCK_ID"=>$arParams["PRODUCTS_IBLOCK_ID"], 
+                    "ID"=>$value, 
+                    "ACTIVE"=>"Y",
+                    "CHECK_PERMISSIONS" => "Y",
+                );
+            }
+            
             $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
             
             while( $productObject = $res->GetNext() )
@@ -75,6 +105,7 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
     }
     $APPLICATION->SetTitle("Разделов - ".$counter); 
     $arResult["CATALOG"] = $resultArray;
+    $arResult["TEST_LINK"] = $page."?F=Y";
 
     $this->IncludeComponentTemplate();
 }

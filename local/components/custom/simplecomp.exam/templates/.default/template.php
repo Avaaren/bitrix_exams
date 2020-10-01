@@ -4,6 +4,7 @@
 <?if(!empty($arResult["CATALOG"])):?>
 	<div class="product-list-block">
       <h3>Каталог</h3>
+      <a href="<?echo $arResult['TEST_LINK'];?>">Фильтр</a>
             <?foreach($arResult["CATALOG"] as $arItem):?>
             <div class="product-header">
                   <b>
