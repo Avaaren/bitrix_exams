@@ -27,4 +27,11 @@
       </div>
 <?endif;?>
 
+<?$this->SetViewTarget("sidebar");?>
+      <div style="color:red; margin: 34px 15px 35px 15px">
+            Максимальная цена - <?echo "\"". $arResult["PRICES"]["MAX"]["NAME"]."\"". $arResult["PRICES"]["MAX"]["PRICE"];?>
+            <br>
+            Минимальная цена - <?echo "\"". $arResult["PRICES"]["MIN"]["NAME"]."\"". $arResult["PRICES"]["MIN"]["PRICE"];?>
+      </div>
+<?$this->EndViewTarget("sidebar");?>
 </div>

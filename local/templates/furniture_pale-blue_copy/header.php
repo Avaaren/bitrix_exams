@@ -115,6 +115,7 @@ $APPLICATION->IncludeFile(
 					<div class="content-block-inner">
 						<h3><?=GetMessage('CFT_NEWS')?></h3>
 <?
+$APPLICATION->ShowViewContent('sidebar');
 $APPLICATION->IncludeFile(
 	SITE_DIR."include/news.php",
 	Array(),
