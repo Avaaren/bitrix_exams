@@ -6,7 +6,6 @@ if ($_SESSION["UPDATED"])
     unset($_SESSION["UPDATED"]);
 }
 
-print_r($GLOBALS);
 if ( $this->StartResultCache() )
 {
     $arFirm = array();
