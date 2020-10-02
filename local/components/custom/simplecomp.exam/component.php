@@ -1,5 +1,6 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
+CModule::IncludeModule('iblock');
 $groups = $USER->GetGroups();
 if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
 {
@@ -30,22 +31,29 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
             }
     }
     $resultArray = array();
-    $counter = 0;
-    foreach( $arFirm as $key => $value )
-    {
-        $counter++;
+    $arFirmKeys = array_keys($arFirm);
+
         $arSelect = Array("ID", "IBLOCK_ID", "NAME");
         $arFilter = Array(
             "IBLOCK_ID"=>$arParams["CLASS_IBLOCK_ID"], 
-            "ID"=>$key, 
+            "ID"=>$arFirmKeys, 
             "ACTIVE"=>"Y",
             "CHECK_PERMISSIONS" => "Y"
         );
-        $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
-
-        if ( $obFirm = $res->Fetch() )
+        $arNavParams = array(
+            'nPageSize' => 2,   // количество элементов на странице
+            'bShowAll' => true, // показывать ссылку «Все элементы»?
+        );
+        $res = CIBlockElement::GetList(Array(), $arFilter, false, $arNavParams, $false);
+        
+        $arResult["NAV_STRING"] = $res->GetPageNavString(
+            'Элементы', // поясняющий текст
+            'modern',   // имя шаблона
+            true       // показывать всегда?
+        );
+        while ( $obFirm = $res->Fetch() )
         {
-            $resultArray[$key] = array(
+            $resultArray[$obFirm["ID"]] = array(
                 "FIRM_NAME" => $obFirm["NAME"],
                 "PRODUCTS" => array(),
             );
@@ -57,25 +65,21 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
             );
             $arFilter = Array(
                 "IBLOCK_ID"=>$arParams["PRODUCTS_IBLOCK_ID"], 
-                "ID"=>$value, 
+                "ID"=>$arFirm[$obFirm["ID"]], 
                 "ACTIVE"=>"Y",
                 "CHECK_PERMISSIONS" => "Y"
             );
-            $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
+            $newsRes = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
             
-            while( $productObject = $res->GetNext() )
+            while( $productObject = $newsRes->GetNext() )
             {   
-                if ( $arParams["LINK_TEMPLATE"] )
-                {
-                    $productObject["DETAIL_PAGE_URL"] = SITE_DIR.$arParams["LINK_TEMPLATE"]."/".$productObject["ID"];
-                }
-                array_push($resultArray[$key]["PRODUCTS"], $productObject);
+                array_push($resultArray[$obFirm["ID"]]["PRODUCTS"], $productObject);
             }
         }
-    }
-    $APPLICATION->SetTitle("Разделов - ".$counter); 
-    $arResult["CATALOG"] = $resultArray;
+    $counter = sizeof(array_keys($resultArray));
+    $APPLICATION->SetTitle("Разделов - ".$counter);
 
+    $arResult["CATALOG"] = $resultArray;
     $this->IncludeComponentTemplate();
 }
 
