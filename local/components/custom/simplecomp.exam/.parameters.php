@@ -26,6 +26,12 @@
             "TYPE" => "STRING",
             "MULTIPLE" => "N",
         ),
+        "NUM_ELEMENTS" => array(
+            "PARENT" => "BASE",
+            "NAME" => "Количество элементов на странице",
+            "TYPE" => "STRING",
+            "MULTIPLE" => "N",
+        ),
         "CACHE_TIME" => array(),
     ),
 );
