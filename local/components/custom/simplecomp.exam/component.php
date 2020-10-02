@@ -41,7 +41,7 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
             "CHECK_PERMISSIONS" => "Y"
         );
         $arNavParams = array(
-            'nPageSize' => 2,   // количество элементов на странице
+            'nPageSize' => $arParams["NUM_ELEMENTS"],   // количество элементов на странице
             'bShowAll' => true, // показывать ссылку «Все элементы»?
         );
         $res = CIBlockElement::GetList(Array(), $arFilter, false, $arNavParams, $false);

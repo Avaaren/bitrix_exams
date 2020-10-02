@@ -11,7 +11,8 @@ $APPLICATION->SetTitle("Простой компонент");
 		"LINK_TEMPLATE" => "",
 		"PRODUCTS_IBLOCK_ID" => "6",
 		"PRODUCT_PROPERTY_CODE" => "FIRMA",
-		"COMPONENT_TEMPLATE" => ".default"
+		"COMPONENT_TEMPLATE" => ".default",
+		"NUM_ELEMENTS" => "2"
 	),
 	false
 );?><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
