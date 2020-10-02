@@ -31,6 +31,7 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
     }
     $resultArray = array();
     $counter = 0;
+    $prices = array();
     foreach( $arFirm as $key => $value )
     {
         $counter++;
@@ -65,17 +66,23 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
             
             while( $productObject = $res->GetNext() )
             {   
-                if ( $arParams["LINK_TEMPLATE"] )
-                {
-                    $productObject["DETAIL_PAGE_URL"] = SITE_DIR.$arParams["LINK_TEMPLATE"]."/".$productObject["ID"];
-                }
+                $prices[$productObject["NAME"]] = $productObject["PROPERTY_PRICE_VALUE"];
                 array_push($resultArray[$key]["PRODUCTS"], $productObject);
             }
         }
     }
     $APPLICATION->SetTitle("Разделов - ".$counter); 
     $arResult["CATALOG"] = $resultArray;
-
+    $arResult["PRICES"] = array(
+        "MAX" => array(
+            "NAME" => array_keys($prices,max($prices))[0],
+            "PRICE" => max($prices)
+        ),
+        "MIN" => array(
+            "NAME" => array_keys($prices,min($prices))[0],
+            "PRICE" => min($prices)
+        ),
+    );
     $this->IncludeComponentTemplate();
 }
 
