@@ -1,6 +1,7 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
 $groups = $USER->GetGroups();
+
 if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
 {
     // Если пользователь контент менеджер, то не кешировать
@@ -79,22 +80,23 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
     }
     $APPLICATION->SetTitle("Разделов - ".$counter); 
     $arResult["CATALOG"] = $resultArray;
-    
-    // Задаем путь к админке инфоблока исходя из имеющихся параметров
-    $iblockURL = "/bitrix/admin/iblock_element_admin.php?IBLOCK_ID=".$arParams["PRODUCTS_IBLOCK_ID"]."&type=".$arResult["IBLOCK_TYPE"];
-    // Добавляем кнопку ведущую на созданный ранее урл
-    $this->AddIncludeAreaIcons(
-        Array( //массив кнопок toolbar'a
-            Array(
-                "ID" => "ADMIN_IBLOCK",
-                "TITLE" => "ИБ в админке",
-                "URL" => $iblockURL,
-                "ICON" => "menu-delete", //CSS-класс с иконкой
-                "IN_PARAMS_MENU" => true, //показать в контекстном меню
-            )
-        )
-    );
+
     $this->IncludeComponentTemplate();
 }
+
+// Задаем путь к админке инфоблока исходя из имеющихся параметров
+$iblockURL = "/bitrix/admin/iblock_element_admin.php?IBLOCK_ID=".$arParams["PRODUCTS_IBLOCK_ID"]."&type=".$arResult["IBLOCK_TYPE"];
+// Добавляем кнопку ведущую на созданный ранее урл
+$this->AddIncludeAreaIcons(
+    Array( //массив кнопок toolbar'a
+        Array(
+            "ID" => "ADMIN_IBLOCK",
+            "TITLE" => "ИБ в админке",
+            "URL" => $iblockURL,
+            "ICON" => "menu-delete", //CSS-класс с иконкой
+            "IN_PARAMS_MENU" => true, //показать в контекстном меню
+        )
+    )
+);
 
 ?>
