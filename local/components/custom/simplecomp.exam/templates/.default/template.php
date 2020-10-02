@@ -13,7 +13,9 @@
 
             <ul class="product-list">
                   <?foreach($arItem["PRODUCTS"] as $product):?>
-                  <li class="product-list-item">
+                        
+                  <li class="product-list-item"
+                  id="<?=$this->GetEditAreaId($product['TEMPLATE_ID']);?>">
                         <?echo $product["NAME"]?> - 
                         <?echo $product["PROPERTY_PRICE_VALUE"]?> - 
                         <?echo $product["PROPERTY_MATERIAL_VALUE"]?> - 

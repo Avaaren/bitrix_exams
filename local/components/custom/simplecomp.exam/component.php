@@ -65,10 +65,6 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
             
             while( $productObject = $res->GetNext() )
             {   
-                if ( $arParams["LINK_TEMPLATE"] )
-                {
-                    $productObject["DETAIL_PAGE_URL"] = SITE_DIR.$arParams["LINK_TEMPLATE"]."/".$productObject["ID"];
-                }
                 array_push($resultArray[$key]["PRODUCTS"], $productObject);
             }
         }
