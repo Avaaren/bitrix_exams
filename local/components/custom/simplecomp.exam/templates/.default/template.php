@@ -24,6 +24,7 @@
                   <?endforeach;?> 
             </ul>
             <?endforeach;?>
+            <?echo $arResult["NAV_STRING"];?>
       </div>
 <?endif;?>
 
