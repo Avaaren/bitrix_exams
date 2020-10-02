@@ -1,6 +1,7 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 
 <div class="product-list-wraper">
+<?echo time();?>
 <?if(!empty($arResult["CATALOG"])):?>
 	<div class="product-list-block">
       <h3>Каталог</h3>
