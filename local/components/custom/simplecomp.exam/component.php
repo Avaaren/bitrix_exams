@@ -1,13 +1,14 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
-$groups = $USER->GetGroups();
-if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
+if ($_SESSION["UPDATED"])
 {
-    // Если пользователь контент менеджер, то не кешировать
-    if ( in_array(8, $groups) && !in_array(1, $groups))
-    {
-        $this->AbortResultCache();
-    }
+    $this->ClearResultCache();
+    unset($_SESSION["UPDATED"]);
+}
+
+print_r($GLOBALS);
+if ( $this->StartResultCache() )
+{
     $arFirm = array();
     $arFilter = Array(
         'IBLOCK_ID'=>$arParams["PRODUCTS_IBLOCK_ID"],
@@ -78,5 +79,10 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
 
     $this->IncludeComponentTemplate();
 }
+
+
+// скрипт в файле /bitrix/php_interface/init.php
+
+
 
 ?>
