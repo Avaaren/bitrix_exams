@@ -51,7 +51,7 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
             );
 
             $arSelect = Array(
-                "ID", "IBLOCK_ID", 'NAME', 
+                "ID", "IBLOCK_ID", 'NAME',"IBLOCK_TYPE_ID", 
                 "PROPERTY_PRICE", "PROPERTY_MATERIAL", 
                 "PROPERTY_ARTNUMBER", "DETAIL_PAGE_URL"
             );
@@ -65,6 +65,10 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
             
             while( $productObject = $res->GetNext() )
             {   
+                if (!$arResult["IBLOCK_TYPE"])
+                {
+                    $arResult["IBLOCK_TYPE"] = $productObject["IBLOCK_TYPE_ID"];
+                }
                 if ( $arParams["LINK_TEMPLATE"] )
                 {
                     $productObject["DETAIL_PAGE_URL"] = SITE_DIR.$arParams["LINK_TEMPLATE"]."/".$productObject["ID"];
@@ -75,7 +79,21 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
     }
     $APPLICATION->SetTitle("Разделов - ".$counter); 
     $arResult["CATALOG"] = $resultArray;
-
+    
+    // Задаем путь к админке инфоблока исходя из имеющихся параметров
+    $iblockURL = "/bitrix/admin/iblock_element_admin.php?IBLOCK_ID=".$arParams["PRODUCTS_IBLOCK_ID"]."&type=".$arResult["IBLOCK_TYPE"];
+    // Добавляем кнопку ведущую на созданный ранее урл
+    $this->AddIncludeAreaIcons(
+        Array( //массив кнопок toolbar'a
+            Array(
+                "ID" => "ADMIN_IBLOCK",
+                "TITLE" => "ИБ в админке",
+                "URL" => $iblockURL,
+                "ICON" => "menu-delete", //CSS-класс с иконкой
+                "IN_PARAMS_MENU" => true, //показать в контекстном меню
+            )
+        )
+    );
     $this->IncludeComponentTemplate();
 }
 
