@@ -2,7 +2,7 @@
 
 CModule::IncludeModule("iblock");
 $groups = $USER->GetGroups();
-
+if ($this->StartResultCache(false, $groups)) {
     // Если пользователь контент менеджер, то не кешировать
     if ( in_array(8, $groups) && !in_array(1, $groups))
     {
@@ -31,7 +31,7 @@ $groups = $USER->GetGroups();
     }
     $resultArray = array();
     $counter = 0;
-    if ($this->StartResultCache()) {
+
     foreach( $arFirm as $key => $value )
     {
         $counter++;
@@ -77,9 +77,7 @@ $groups = $USER->GetGroups();
     }
     $APPLICATION->SetTitle("Разделов - ".$counter); 
     $arResult["CATALOG"] = $resultArray;
-    $this->EndResultCache();
-}
-
+    
     $this->IncludeComponentTemplate();
-
+}
 ?>
