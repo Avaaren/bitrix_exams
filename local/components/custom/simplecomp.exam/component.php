@@ -1,8 +1,8 @@
 <? if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
+CModule::IncludeModule("iblock");
 $groups = $USER->GetGroups();
-if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
-{
+
     // Если пользователь контент менеджер, то не кешировать
     if ( in_array(8, $groups) && !in_array(1, $groups))
     {
@@ -31,6 +31,7 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
     }
     $resultArray = array();
     $counter = 0;
+    if ($this->StartResultCache()) {
     foreach( $arFirm as $key => $value )
     {
         $counter++;
@@ -41,6 +42,7 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
             "ACTIVE"=>"Y",
             "CHECK_PERMISSIONS" => "Y"
         );
+        
         $res = CIBlockElement::GetList(Array(), $arFilter, false, false, $arSelect);
 
         if ( $obFirm = $res->Fetch() )
@@ -75,8 +77,9 @@ if ( $this->StartResultCache(false, $groups,$APPLICATION->GetCurDir()) )
     }
     $APPLICATION->SetTitle("Разделов - ".$counter); 
     $arResult["CATALOG"] = $resultArray;
+    $this->EndResultCache();
+}
 
     $this->IncludeComponentTemplate();
-}
 
 ?>
