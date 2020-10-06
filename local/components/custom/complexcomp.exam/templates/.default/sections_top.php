@@ -37,6 +37,7 @@ $this->setFrameMode(true);
 
 		"SECTION_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["section"],
 		"DETAIL_URL" => $arResult["FOLDER"].$arResult["URL_TEMPLATES"]["detail"],
+		"EXAM_PAGE_URL" => $arResult["EXAM_PAGE_URL"],
 	),
 	$component
 );

@@ -13,6 +13,7 @@
 $this->setFrameMode(true);
 ?>
 <div class="photo-sections-top">
+Страница экзамена: <a href="<?echo $arParams["EXAM_PAGE_URL"];?>"><?echo $arParams["EXAM_PAGE_URL"];?></a>
 <?foreach($arResult["SECTIONS"] as $arSection):?>
 	<?
 	$this->AddEditAction('section_'.$arSection['ID'], $arSection['ADD_ELEMENT_LINK'], CIBlock::GetArrayByID($arSection["IBLOCK_ID"], "ELEMENT_ADD"), array('ICON' => 'bx-context-toolbar-create-icon'));
