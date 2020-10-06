@@ -69,6 +69,9 @@ $arComponentParameters = array(
 		"VARIABLE_ALIASES" => Array(
 			"SECTION_ID" => Array("NAME" => GetMessage("SECTION_ID_DESC")),
 			"ELEMENT_ID" => Array("NAME" => GetMessage("ELEMENT_ID_DESC")),
+			"PARAM_1" => Array("NAME" => "PARAM_1"),
+			"PARAM_2" => Array("NAME" => "PARAM_2"),
+			
 		),
 		"SEF_MODE" => Array(
 			"sections_top" => array(
@@ -85,6 +88,11 @@ $arComponentParameters = array(
 				"NAME" => GetMessage("DETAIL_PAGE"),
 				"DEFAULT" => "#SECTION_ID#/#ELEMENT_ID#/",
 				"VARIABLES" => array("ELEMENT_ID", "SECTION_ID"),
+			),
+			"exampage" => array(
+				"NAME" => "Страница экзамена",
+				"DEFAULT" => "exam/new/#PARAM_1#/?PARAM_2=#PARAM_2#",
+				"VARIABLES" => array("PARAM_1", "PARAM_2"),
 			),
 		),
 		"IBLOCK_TYPE" => array(
