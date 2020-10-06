@@ -7,7 +7,52 @@
 /** @var string $componentTemplate */
 /** @global CDatabase $DB */
 /** @global CUser $USER */
-/** @global CMain $APPLICATION */
+/** @global CMain $APPLICATION */	
+
+function makeUrl($examTemplatesArray, $arParams)
+{
+	if ( $arParams["SEF_MODE"] == "Y" )
+	{
+		// Создаем ссылку на основе шаблона url
+		$pageTemplate = $examTemplatesArray["SEF"];
+		$resultSefUrl = str_replace("#PARAM_1#", 123, $pageTemplate);
+		$resultSefUrl = str_replace("#PARAM_2#", 456, $resultSefUrl);
+		$resultSefUrl = $arParams["SEF_FOLDER"].$resultSefUrl;
+		// Получаем запрашиваемый url
+		$requestURL = Bitrix\Main\Context::getCurrent()->getRequest()->getRequestedPage();
+		// Убираем из него index.php
+		$requestURL = substr_replace($requestURL,"",strpos($requestURL, "index.php"), strlen("index.php"));
+
+		return array(
+			"request_url" => $requestURL,
+			"result_url" => $resultSefUrl
+		);
+		
+	}
+	else 
+	{
+		global $APPLICATION;
+
+		$pageTemplate = $examTemplatesArray["NOT_SEF"];
+		$resultSefUrl = str_replace("#PARAM_1#", 123, $pageTemplate);
+		$resultSefUrl = str_replace("#PARAM_2#", 456, $resultSefUrl);
+	
+		$dir = $APPLICATION->GetCurDir();
+		$resultSefUrl = $dir.$resultSefUrl;
+		$requestURL = Bitrix\Main\Context::getCurrent()->getRequest()->getRequestedPage();
+		$requestURL = substr_replace($requestURL,"",strpos($requestURL, "index.php"), strlen("index.php"));
+		
+		return array(
+			"request_url" => $requestURL,
+			"result_url" => $resultSefUrl
+		);
+	}
+}
+
+$examTemplatesArray = array(
+	"SEF" => $arParams["SEF_URL_TEMPLATES"]["exampage"],
+	"NOT_SEF" => "?".$arParams['VARIABLE_ALIASES']['PARAM_1']."=#PARAM_1#&".$arParams['VARIABLE_ALIASES']['PARAM_2']."=#PARAM_2#",
+);
 
 if($arParams["USE_FILTER"]=="Y")
 {
@@ -32,8 +77,9 @@ $arComponentVariables = array(
 	"SECTION_CODE",
 	"ELEMENT_ID",
 	"ELEMENT_CODE",
+	"PARAM_1",
+	"PARAM_2"
 );
-
 if($arParams["SEF_MODE"] == "Y")
 {
 	$arVariables = array();
@@ -102,7 +148,6 @@ else
 
 	$arVariableAliases = CComponentEngine::MakeComponentVariableAliases($arDefaultVariableAliases, $arParams["VARIABLE_ALIASES"]);
 	CComponentEngine::InitComponentVariables(false, $arComponentVariables, $arVariableAliases, $arVariables);
-
 	$componentPage = "";
 
 	if(isset($arVariables["ELEMENT_ID"]) && intval($arVariables["ELEMENT_ID"]) > 0)
@@ -113,6 +158,10 @@ else
 		$componentPage = "section";
 	elseif(isset($arVariables["SECTION_CODE"]) && strlen($arVariables["SECTION_CODE"]) > 0)
 		$componentPage = "section";
+	elseif(isset($arVariables["ELEMENT_CODE"]) && strlen($arVariables["ELEMENT_CODE"]) > 0)
+		$componentPage = "detail";
+	elseif(isset($arVariables["PARAM_1"]) && strlen($arVariables["PARAM_1"]) > 0)
+		$componentPage = "exampage";
 	else
 		$componentPage = "sections_top";
 
@@ -125,6 +174,16 @@ else
 		"VARIABLES" => $arVariables,
 		"ALIASES" => $arVariableAliases
 	);
+}
+$examUrls = makeUrl($examTemplatesArray, $arParams);
+// Если шаблон схож с шаблоном других страниц
+if ( $examUrls["request_url"] == $examUrls["result_url"] )
+{
+	$componentPage = "exampage";
+}
+elseif ($componentPage == "sections_top")
+{	
+	$arResult["EXAM_PAGE_URL"] = $examUrls["result_url"];
 }
 $this->IncludeComponentTemplate($componentPage);
 ?>
