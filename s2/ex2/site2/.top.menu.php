@@ -1,37 +1,15 @@
-<?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
 <?
 $aMenuLinks = Array(
 	Array(
-		"Furniture Company", 
-		"company/", 
+		"about", 
+		"/s2/ex2/site2/about.php", 
 		Array(), 
 		Array(), 
 		"" 
 	),
 	Array(
-		"News", 
-		"news/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Products", 
-		"products/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Services", 
-		"services/", 
-		Array(), 
-		Array(), 
-		"" 
-	),
-	Array(
-		"Contacts", 
-		"contacts/", 
+		"main", 
+		"/s2/ex2/site2/index.php", 
 		Array(), 
 		Array(), 
 		"" 
