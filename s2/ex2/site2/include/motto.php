@@ -1,1 +1,1 @@
-Company slogan<br />  placeholder
+Company slogan!!!!
