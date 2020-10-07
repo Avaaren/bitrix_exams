@@ -7,6 +7,11 @@ $arTemplateParameters = array(
 		"TYPE" => "CHECKBOX",
 		"DEFAULT" => "Y",
 	),
+	"USE_AJAX_REPORT" => Array(
+		"NAME" => "Использовать ajax жалобы",
+		"TYPE" => "CHECKBOX",
+		"DEFAULT" => "N",
+	),
 	"SPECIAL_DATE" => Array(
 		"NAME" => "Использовать specialdate",
 		"TYPE" => "CHECKBOX",
