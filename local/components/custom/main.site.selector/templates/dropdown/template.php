@@ -1,5 +1,4 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
-<?print_r($arResult);?>
 <select name="site" onChange="location.href=this.value">
 <?
 foreach ($arResult["SITES"] as $key => $arSite):
