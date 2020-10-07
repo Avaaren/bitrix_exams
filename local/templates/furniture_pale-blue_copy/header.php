@@ -113,6 +113,17 @@ $APPLICATION->IncludeFile(
 );?>
 				<div class="content-block">
 					<div class="content-block-inner">
+					<h3>Выбор языка</h3>
+					<?$APPLICATION->IncludeComponent(
+						"custom:main.site.selector",
+						"dropdown",
+						Array(
+							"CACHE_TIME" => "3600",
+							"CACHE_TYPE" => "A",
+							"SITE_LIST" => array("k2","s2")
+						)
+					);?>
+
 						<h3><?=GetMessage('CFT_NEWS')?></h3>
 <?
 $APPLICATION->IncludeFile(
