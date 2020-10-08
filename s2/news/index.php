@@ -72,7 +72,7 @@ $APPLICATION->SetTitle("");?>
 		"SORT_BY2" => "SORT",
 		"SORT_ORDER1" => "DESC",
 		"SORT_ORDER2" => "ASC",
-		"SPECIAL_DATE" => "N",
+		"SPECIAL_DATE" => "Y",
 		"STRICT_SECTION_CHECK" => "N",
 		"USE_CATEGORIES" => "N",
 		"USE_FILTER" => "N",
