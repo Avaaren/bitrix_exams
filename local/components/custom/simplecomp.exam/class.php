@@ -81,6 +81,7 @@ class CSimpleComponent extends CBitrixComponent
         }
         $this->arResult["NEWS_CATALOG"] = $resultArray;
         $this->arResult["COUNTER"] = $counter;
+        $this->SetResultCacheKeys(array("COUNTER"));
     }
 
     public function executeComponent()
@@ -90,5 +91,7 @@ class CSimpleComponent extends CBitrixComponent
             $this->selectCatalog();
             $this->includeComponentTemplate();
         }
+        global $APPLICATION;
+        $APPLICATION->SetTitle("Элементов каталога - ".$this->arResult['COUNTER']);
     }
 }
