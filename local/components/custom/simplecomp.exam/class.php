@@ -2,6 +2,17 @@
 
 class CSimpleComponent extends CBitrixComponent
 {
+    private $user, $application;
+
+    function __construct($component = null)
+    {
+        global $USER, $APPLICATION;
+        parent::__construct($component);
+
+        $this->user = $USER;
+        $this->application = $APPLICATION;
+    }
+
     public function getResult()
     {
         $arFirm = array();
@@ -68,7 +79,7 @@ class CSimpleComponent extends CBitrixComponent
                 }
             }
         }
-    
+
         $this->arResult["CATALOG"] = $resultArray;
         $this->arResult["COUNTER"] = $counter;
         $this->SetResultCacheKeys(array("COUNTER"));
@@ -84,10 +95,9 @@ class CSimpleComponent extends CBitrixComponent
 
     public function executeComponent()
     {
-        global $USER, $APPLICATION;
         $this->loadModules();
 
-        $groups = $USER->GetGroups();
+        $groups = $this->user->GetGroups();
         if ( $this->startResultCache(false, $groups) ) 
         {
             // Если пользователь не администратор, то не кешировать
@@ -98,6 +108,6 @@ class CSimpleComponent extends CBitrixComponent
             $this->getResult();
             $this->includeComponentTemplate();
         }
-    $APPLICATION->SetTitle("Разделов - ".$this->arResult["COUNTER"]);
+    $this->application->SetTitle("Разделов - ".$this->arResult["COUNTER"]);
     }
-}
+} 
