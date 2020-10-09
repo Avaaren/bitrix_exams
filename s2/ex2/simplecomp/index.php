@@ -5,7 +5,7 @@ $APPLICATION->SetTitle("Простой компонент");
 	"custom:simplecomp.exam", 
 	".default", 
 	array(
-		"CACHE_TIME" => "10",
+		"CACHE_TIME" => "100000",
 		"CACHE_TYPE" => "A",
 		"CLASS_IBLOCK_ID" => "11",
 		"LINK_TEMPLATE" => "",
