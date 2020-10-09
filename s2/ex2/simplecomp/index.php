@@ -10,7 +10,7 @@ $APPLICATION->SetTitle("Простой компонент");
 		"UF_CODE" => "UF_NEWS_LINK",
 		"COMPONENT_TEMPLATE" => ".default",
 		"CACHE_TYPE" => "A",
-		"CACHE_TIME" => "0"
+		"CACHE_TIME" => "1000"
 	),
 	false
 );?><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
