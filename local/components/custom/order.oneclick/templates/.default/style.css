@@ -1,0 +1,32 @@
+#oneclick-form {
+	width: 350px;
+	height: 150px;
+	background: #e6e6e6;
+	border-radius: 8px;
+	padding: 20px 30px;
+	max-width: calc(100vw - 40px);
+	box-sizing: border-box;
+	font-family: 'Montserrat', sans-serif;
+    position: relative
+}
+
+#oneclick-form input {
+	width: 100%;
+	padding: 10px;
+	box-sizing: border-box;
+	background: none;
+	outline: none;
+	resize: none;
+	border: 0;
+	font-family: 'Montserrat', sans-serif;
+	transition: all .3s;
+	border-bottom: 2px solid #bebed2
+}
+
+#oneclick-form input:focus {
+	border-bottom: 2px solid #78788c
+}
+
+#oneclick-form input[type=submit]:hover {
+	color:red;
+}
