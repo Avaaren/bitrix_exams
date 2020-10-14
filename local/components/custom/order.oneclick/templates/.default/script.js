@@ -1,22 +1,27 @@
 $(document).ready(function(){
     $("#oneclick-form").on("submit", function(e){
         e.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: "/local/components/custom/order.oneclick/oneclick.php",
-            data: $(this).serialize(),
-            success:function(response){
-                var jsonData = JSON.parse(response);
-                if (jsonData.errors.length > 0) {
-                    jsonData.errors.forEach(element => {
-                       alert(element); 
+        // Битриксовый аякс запрос к компоненту
+        // Обращается к файлу class.php к методу oneClickOrderAction
+        BX.ajax.runComponentAction('custom:order.oneclick',
+        'oneClickOrder', { 
+            mode: 'class',
+            data: {
+                number: $("#phoneNumber").val()
+            },
+        })
+        .then(function(response) {
+            if (response.status === 'success') {
+                if (response.data.errors.length > 0) {
+                    response.data.errors.forEach(element => {
+                        alert(element); 
                     });
                 }
                 else {
-                    alert(`Заказ успешно добавлен с id ${jsonData.id}`);
+                    alert(`Заказ успешно добавлен с id ${response.data.id}`);
                 }
-            },
-            errors:function(){
+            }
+            else {
                 alert("Запрос не дошел");
             }
         });
